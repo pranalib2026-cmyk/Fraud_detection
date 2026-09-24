@@ -1,0 +1,10 @@
+{
+  "name": "hhgoa-pdf-extract",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "One-off helper to extract text from the official challenge PDFs so they can be archived as source-of-truth documents.",
+  "dependencies": {
+    "pdfjs-dist": "^4.10.38"
+  }
+}

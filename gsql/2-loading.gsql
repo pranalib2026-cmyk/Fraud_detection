@@ -1,0 +1,104 @@
+-- =============================================================================
+-- Loading jobs for the HHGOA graph (Phase 2)
+--
+-- Reads slim CSVs produced by `node tools/prepare-tg-load.mjs` from the raw
+-- dataset. Every column is named, so `USING header="true"` maps them by name.
+-- Run (paths are passed at runtime):
+--
+--   RUN LOADING JOB load_hhgoa_base USING
+--     f_customer="/abs/data/derived/tg_load/customers.csv",
+--     f_card="/abs/data/derived/tg_load/cards.csv",
+--     f_txn="/abs/data/derived/tg_load/transactions.csv",
+--     f_device="/abs/data/derived/tg_load/devices.csv",
+--     f_tx_device="/abs/data/derived/tg_load/tx_device.csv",
+--     f_region="/abs/data/derived/tg_load/regions.csv",
+--     f_tx_region="/abs/data/derived/tg_load/tx_region.csv",
+--     f_email="/abs/data/derived/tg_load/email_domains.csv",
+--     f_tx_email="/abs/data/derived/tg_load/tx_email.csv",
+--     f_next="/abs/data/derived/tg_load/tx_next.csv"
+--
+--   RUN LOADING JOB load_hhgoa_cases USING
+--     f_closed="/abs/data/derived/tg_load/closed_cases.csv",
+--     f_cc_involves="/abs/data/derived/tg_load/closed_case_involves.csv",
+--     f_cc_connected="/abs/data/derived/tg_load/closed_case_connected.csv",
+--     f_cc_card="/abs/data/derived/tg_load/closed_case_card.csv"
+-- =============================================================================
+
+CREATE LOADING JOB load_hhgoa_base FOR GRAPH hhgoa_fraud {
+  DEFINE FILENAME f_customer;
+  DEFINE FILENAME f_card;
+  DEFINE FILENAME f_txn;
+  DEFINE FILENAME f_device;
+  DEFINE FILENAME f_tx_device;
+  DEFINE FILENAME f_region;
+  DEFINE FILENAME f_tx_region;
+  DEFINE FILENAME f_email;
+  DEFINE FILENAME f_tx_email;
+  DEFINE FILENAME f_next;
+
+  -- vertices ---------------------------------------------------------------
+  LOAD f_customer TO VERTEX Customer VALUES ($"customer_id")
+    USING header = "true", separator = ",";
+
+  LOAD f_card TO VERTEX Card VALUES ($"card_id", $"card_key", $"customer_id", $"k_index", $"label_source")
+    USING header = "true", separator = ",";
+
+  LOAD f_txn TO VERTEX Transaction VALUES (
+    $"txn_id", $"ts", $"ts_epoch", $"amount_usd", $"product_cd", $"channel",
+    $"risk_score", $"customer_id", $"card_id", $"addr1", $"addr2",
+    $"p_emaildomain", $"r_emaildomain"
+  ) USING header = "true", separator = ",";
+
+  LOAD f_device TO VERTEX DeviceProfile VALUES (
+    $"device_id", $"device_type", $"os", $"browser", $"screen",
+    $"device_new_or_found", $"proxy"
+  ) USING header = "true", separator = ",";
+
+  LOAD f_region TO VERTEX BillingRegion VALUES ($"region", $"country")
+    USING header = "true", separator = ",";
+
+  LOAD f_email TO VERTEX EmailDomain VALUES ($"domain")
+    USING header = "true", separator = ",";
+
+  -- edges ------------------------------------------------------------------
+  LOAD f_card TO EDGE OWNS VALUES ($"customer_id", $"card_id")
+    USING header = "true", separator = ",";
+
+  LOAD f_txn TO EDGE MADE VALUES ($"card_id", $"txn_id")
+    USING header = "true", separator = ",";
+
+  LOAD f_tx_device TO EDGE FROM_DEVICE VALUES ($"txn_id", $"device_id")
+    USING header = "true", separator = ",";
+
+  LOAD f_tx_region TO EDGE BILLED_IN VALUES ($"txn_id", $"region")
+    USING header = "true", separator = ",";
+
+  LOAD f_tx_email TO EDGE PURCHASER_EMAIL VALUES ($"txn_id", $"domain")
+    USING header = "true", separator = ",";
+
+  LOAD f_next TO EDGE NEXT VALUES ($"from_txn_id", $"to_txn_id")
+    USING header = "true", separator = ",";
+}
+
+CREATE LOADING JOB load_hhgoa_cases FOR GRAPH hhgoa_fraud {
+  DEFINE FILENAME f_closed;
+  DEFINE FILENAME f_cc_involves;
+  DEFINE FILENAME f_cc_connected;
+  DEFINE FILENAME f_cc_card;
+
+  LOAD f_closed TO VERTEX ClosedCase VALUES (
+    $"case_id", $"customer_id", $"card_id", $"opened_at", $"closed_at",
+    $"outcome", $"pattern", $"first_fraud_txn_id", $"txn_ids", $"n_txns",
+    $"exposure_usd", $"connected_card_ids", $"actions_taken", $"report_filed",
+    $"analyst_notes"
+  ) USING header = "true", separator = ",";
+
+  LOAD f_cc_involves TO EDGE INVOLVES VALUES ($"case_id", $"txn_id")
+    USING header = "true", separator = ",";
+
+  LOAD f_cc_connected TO EDGE CONNECTED_TO VALUES ($"case_id", $"card_id")
+    USING header = "true", separator = ",";
+
+  LOAD f_cc_card TO EDGE ON_CARD VALUES ($"case_id", $"card_id")
+    USING header = "true", separator = ",";
+}

@@ -1,0 +1,1035 @@
+{
+  "generated_at": "2026-09-22T16:37:08.923Z",
+  "source": "data/raw/HHGOA_IEEE",
+  "case_pack": {
+    "rows": 20,
+    "columns": [
+      "case_id",
+      "opened_at",
+      "trigger_type",
+      "trigger_text",
+      "flagged_txn_id",
+      "card_id",
+      "customer_id",
+      "risk_score"
+    ],
+    "triggers": {
+      "risk_score": 11,
+      "customer_report": 8,
+      "analyst_request": 1
+    },
+    "distinct_customers": 20,
+    "distinct_cards": 20
+  },
+  "closed_cases": {
+    "rows": 5565,
+    "columns": [
+      "case_id",
+      "customer_id",
+      "card_id",
+      "opened_at",
+      "closed_at",
+      "outcome",
+      "pattern",
+      "first_fraud_txn_id",
+      "txn_ids",
+      "n_txns",
+      "exposure_usd",
+      "connected_card_ids",
+      "actions_taken",
+      "report_filed",
+      "analyst_notes"
+    ],
+    "outcomes": {
+      "confirmed_fraud": 4665,
+      "cleared": 900
+    },
+    "patterns": {
+      "card_not_present_fraud": 1404,
+      "account_takeover": 1205,
+      "card_not_present_new_device": 1076,
+      "out_of_region_use": 955,
+      "none": 900,
+      "card_testing": 16,
+      "undocumented": 9
+    },
+    "report_filed": {
+      "No": 5168,
+      "Yes": 397
+    },
+    "actions_taken": {
+      "CREATE_CASE": 4665,
+      "BLOCK_CARD": 4665,
+      "VERIFY_WITH_CUSTOMER": 900,
+      "CLOSE_NO_FRAUD": 900,
+      "FILE_REPORT": 397
+    },
+    "exposure_usd_total": 2072387.77,
+    "exposure_usd_max": 35031.56,
+    "n_txns_over_1": 2107,
+    "connected_cards_present": 4,
+    "date_range": [
+      "2016-07-02 07:17:26",
+      "2016-11-06 23:39:58"
+    ]
+  },
+  "transactions": {
+    "columns": 397,
+    "rows": 590742,
+    "distinct_customers": 13553,
+    "distinct_card1": 13553,
+    "distinct_customer_card_pairs": 13553,
+    "customers_with_multiple_card1": 0,
+    "card1_multi_customer": 0,
+    "product_cd": {
+      "W": 439670,
+      "C": 68721,
+      "R": 37699,
+      "H": 33024,
+      "S": 11628
+    },
+    "channel": {
+      "in_person": 439670,
+      "online": 151072
+    },
+    "risk_score": {
+      "nulls": 0,
+      "min": 0.01,
+      "max": 0.99,
+      "histogram_deciles": [
+        249671,
+        167229,
+        81288,
+        35870,
+        16725,
+        11513,
+        10558,
+        9607,
+        6516,
+        1765
+      ]
+    },
+    "ts_range": [
+      "2016-07-02 00:02:21",
+      "2016-12-31 23:58:54"
+    ],
+    "txn_id_range": [
+      "3000001",
+      "3590742"
+    ],
+    "amount": {
+      "total_usd": 79797405.56,
+      "max_usd": 31937.38
+    },
+    "addr1_distinct": 333,
+    "addr2_distinct": 75,
+    "addr2_top": {
+      "87.0": 520643,
+      "": 65739,
+      "60.0": 3087,
+      "96.0": 642,
+      "32.0": 91,
+      "65.0": 82
+    },
+    "resolved_requested_txns": 14975,
+    "resolved_missing": 0
+  },
+  "identity": {
+    "columns": 41,
+    "rows": 144432,
+    "id_15": {
+      "Found": 67773,
+      "New": 61754,
+      "Unknown": 11653,
+      "": 3252
+    },
+    "id_23": {
+      "": 139144,
+      "IP_PROXY:TRANSPARENT": 3492,
+      "IP_PROXY:ANONYMOUS": 1185,
+      "IP_PROXY:HIDDEN": 611
+    },
+    "id_30_top": {
+      "": 66693,
+      "Windows 10": 21167,
+      "Windows 7": 13117,
+      "iOS 11.2.1": 3739,
+      "iOS 11.1.2": 3700,
+      "Android 7.0": 2990,
+      "Mac OS X 10_12_6": 2559,
+      "Mac OS X 10_11_6": 2348,
+      "iOS 11.3.0": 2016,
+      "Windows 8.1": 1914,
+      "Mac OS X 10_10_5": 1651,
+      "iOS 11.2.6": 1647,
+      "iOS 10.3.3": 1558,
+      "Mac OS X 10_13_2": 1423,
+      "Mac OS X 10_13_1": 1211
+    },
+    "id_31_top": {
+      "chrome 63.0": 22012,
+      "mobile safari 11.0": 13439,
+      "mobile safari generic": 11481,
+      "ie 11.0 for desktop": 9039,
+      "safari generic": 8197,
+      "chrome 62.0": 7182,
+      "chrome 65.0": 6873,
+      "chrome 64.0": 6719,
+      "chrome 63.0 for android": 5809,
+      "chrome generic": 4779,
+      "chrome 66.0": 4264,
+      "edge 16.0": 4189,
+      "": 3955,
+      "chrome 64.0 for android": 3476,
+      "chrome 65.0 for android": 3336
+    },
+    "id_33_top": {
+      "": 70972,
+      "1920x1080": 17000,
+      "1366x768": 8607,
+      "1334x750": 6452,
+      "2208x1242": 4911,
+      "1440x900": 4389,
+      "1600x900": 3510,
+      "2048x1536": 3485,
+      "1280x800": 2153,
+      "2560x1600": 2093,
+      "2560x1440": 1866,
+      "2880x1800": 1757,
+      "1280x1024": 1743,
+      "1680x1050": 1728,
+      "1136x640": 1712
+    },
+    "device_type": {
+      "desktop": 85204,
+      "mobile": 55801,
+      "": 3427
+    },
+    "device_info_distinct": 1787,
+    "device_info_top": {
+      "Windows": 47741,
+      "": 25580,
+      "iOS Device": 19805,
+      "MacOS": 12579,
+      "Trident/7.0": 7446,
+      "rv:11.0": 1904,
+      "rv:57.0": 962,
+      "SM-J700M Build/MMB29K": 549,
+      "SM-G610M Build/MMB29K": 461,
+      "SM-G935F Build/NRD90M": 448,
+      "SM-G531H Build/LMY48B": 410,
+      "rv:59.0": 362,
+      "SM-G955U Build/NRD90M": 329,
+      "SM-G532M Build/MMB29T": 316,
+      "ALE-L23 Build/HuaweiALE-L23": 312,
+      "SM-G950U Build/NRD90M": 290,
+      "SM-G930V Build/NRD90M": 275,
+      "rv:58.0": 269,
+      "rv:52.0": 256,
+      "SAMSUNG": 235
+    },
+    "resolved_requested_txns": 8418
+  },
+  "card_id_derivation": {
+    "candidate_keys": {
+      "card1": {
+        "collisions": 36,
+        "distinct_signatures": 1896,
+        "cards": 1917,
+        "resolved_pairs": 14975
+      },
+      "customer_id": {
+        "collisions": 36,
+        "distinct_signatures": 1896,
+        "cards": 1917,
+        "resolved_pairs": 14975
+      },
+      "customer_id+card1": {
+        "collisions": 36,
+        "distinct_signatures": 1896,
+        "cards": 1917,
+        "resolved_pairs": 14975
+      },
+      "card1+card4": {
+        "collisions": 8,
+        "distinct_signatures": 1913,
+        "cards": 1917,
+        "resolved_pairs": 14975
+      },
+      "card1+card6": {
+        "collisions": 0,
+        "distinct_signatures": 1917,
+        "cards": 1917,
+        "resolved_pairs": 14975
+      },
+      "card1+card4+card6": {
+        "collisions": 0,
+        "distinct_signatures": 1917,
+        "cards": 1917,
+        "resolved_pairs": 14975
+      },
+      "customer_id+card1+card6": {
+        "collisions": 0,
+        "distinct_signatures": 1917,
+        "cards": 1917,
+        "resolved_pairs": 14975
+      }
+    },
+    "chosen_key": "card1+card6",
+    "chosen_key_conflicts": 0,
+    "conflict_examples": [],
+    "labelled_card_ids": 1917,
+    "labelled_signatures": 1917,
+    "signatures_without_card6": 18,
+    "customers_with_2plus_labelled_cards": 21,
+    "k_index_ordering_fit": {
+      "first_ts asc": "4/21",
+      "first_ts desc": "17/21",
+      "last_ts asc": "19/21",
+      "last_ts desc": "2/21",
+      "n_txns asc": "17/21",
+      "n_txns desc": "4/21",
+      "total_amt asc": "17/21",
+      "total_amt desc": "4/21",
+      "card6 asc": "21/21",
+      "card6 desc": "0/21",
+      "card1 asc": "4/21",
+      "card1 desc": "4/21"
+    },
+    "k_index_best_ordering": "card6 asc = 21/21",
+    "card_level_detail": [
+      {
+        "customer_id": "C04597",
+        "cards": [
+          {
+            "card_id": "C04597-K2",
+            "signature": "22904|debit",
+            "k": 2,
+            "txns": 2054,
+            "total_usd": 79705.82,
+            "first_ts": "2016-07-02 00:56:36",
+            "last_ts": "2016-12-29 22:23:49",
+            "products": "C"
+          },
+          {
+            "card_id": "C04597-K1",
+            "signature": "22904|",
+            "k": 1,
+            "txns": 8,
+            "total_usd": 351.8,
+            "first_ts": "2016-09-28 15:49:36",
+            "last_ts": "2016-12-07 02:13:37",
+            "products": "C"
+          }
+        ]
+      },
+      {
+        "customer_id": "C07212",
+        "cards": [
+          {
+            "card_id": "C07212-K2",
+            "signature": "15876|credit",
+            "k": 2,
+            "txns": 2518,
+            "total_usd": 518759.4,
+            "first_ts": "2016-07-02 01:40:00",
+            "last_ts": "2016-12-29 21:05:30",
+            "products": "W/R/H/C/S"
+          },
+          {
+            "card_id": "C07212-K1",
+            "signature": "15876|",
+            "k": 1,
+            "txns": 4,
+            "total_usd": 1311.73,
+            "first_ts": "2016-09-28 15:10:55",
+            "last_ts": "2016-12-07 02:54:34",
+            "products": "W"
+          }
+        ]
+      },
+      {
+        "customer_id": "C02000",
+        "cards": [
+          {
+            "card_id": "C02000-K2",
+            "signature": "16800|debit",
+            "k": 2,
+            "txns": 2597,
+            "total_usd": 278544.22,
+            "first_ts": "2016-07-04 01:02:50",
+            "last_ts": "2016-12-31 22:10:50",
+            "products": "W/H/R/C/S"
+          },
+          {
+            "card_id": "C02000-K1",
+            "signature": "16800|",
+            "k": 1,
+            "txns": 7,
+            "total_usd": 441.69,
+            "first_ts": "2016-10-01 14:25:51",
+            "last_ts": "2016-12-10 01:30:05",
+            "products": "W"
+          }
+        ]
+      },
+      {
+        "customer_id": "C02575",
+        "cards": [
+          {
+            "card_id": "C02575-K2",
+            "signature": "21514|debit",
+            "k": 2,
+            "txns": 212,
+            "total_usd": 37562.21,
+            "first_ts": "2016-07-02 12:01:01",
+            "last_ts": "2016-12-30 18:14:07",
+            "products": "W/R/H"
+          },
+          {
+            "card_id": "C02575-K1",
+            "signature": "21514|",
+            "k": 1,
+            "txns": 1,
+            "total_usd": 445.06,
+            "first_ts": "2016-09-29 16:59:38",
+            "last_ts": "2016-09-29 16:59:38",
+            "products": "W"
+          }
+        ]
+      },
+      {
+        "customer_id": "C02716",
+        "cards": [
+          {
+            "card_id": "C02716-K2",
+            "signature": "18652|credit",
+            "k": 2,
+            "txns": 5155,
+            "total_usd": 1325499.72,
+            "first_ts": "2016-07-05 00:52:58",
+            "last_ts": "2016-12-31 23:35:59",
+            "products": "W/S/H/R/C"
+          },
+          {
+            "card_id": "C02716-K1",
+            "signature": "18652|",
+            "k": 1,
+            "txns": 17,
+            "total_usd": 3624.51,
+            "first_ts": "2016-10-02 15:35:36",
+            "last_ts": "2016-12-11 03:23:09",
+            "products": "W/C"
+          }
+        ]
+      },
+      {
+        "customer_id": "C09800",
+        "cards": [
+          {
+            "card_id": "C09800-K2",
+            "signature": "12563|debit",
+            "k": 2,
+            "txns": 5110,
+            "total_usd": 617226.45,
+            "first_ts": "2016-07-06 01:13:08",
+            "last_ts": "2016-12-31 23:06:01",
+            "products": "W/H/S/R/C"
+          },
+          {
+            "card_id": "C09800-K1",
+            "signature": "12563|",
+            "k": 1,
+            "txns": 19,
+            "total_usd": 1972.51,
+            "first_ts": "2016-10-03 13:44:06",
+            "last_ts": "2016-12-12 02:31:09",
+            "products": "W"
+          }
+        ]
+      }
+    ]
+  },
+  "case_pack_resolution": [
+    {
+      "case_id": "HHG-001",
+      "trigger_type": "risk_score",
+      "flagged_txn_id": "3514030",
+      "card_id": "C12382-K1",
+      "customer_id": "C12382",
+      "risk_score_from_pack": "0.61",
+      "resolved": {
+        "customer_id": "C12382",
+        "card1": "21139",
+        "ts": "2016-12-04 19:55:28",
+        "channel": "in_person",
+        "product_cd": "W",
+        "amount_usd": 77.07,
+        "addr1": "444.0",
+        "addr2": "87.0",
+        "risk_score": "0.61"
+      },
+      "identity": null,
+      "customer_id_matches": true,
+      "risk_score_matches": true
+    },
+    {
+      "case_id": "HHG-002",
+      "trigger_type": "risk_score",
+      "flagged_txn_id": "3478782",
+      "card_id": "C11891-K1",
+      "customer_id": "C11891",
+      "risk_score_from_pack": "0.79",
+      "resolved": {
+        "customer_id": "C11891",
+        "card1": "18586",
+        "ts": "2016-11-22 17:27:07",
+        "channel": "online",
+        "product_cd": "C",
+        "amount_usd": 292.36,
+        "addr1": "",
+        "addr2": "",
+        "risk_score": "0.79"
+      },
+      "identity": null,
+      "customer_id_matches": true,
+      "risk_score_matches": true
+    },
+    {
+      "case_id": "HHG-003",
+      "trigger_type": "customer_report",
+      "flagged_txn_id": "3530164",
+      "card_id": "C08623-K2",
+      "customer_id": "C08623",
+      "risk_score_from_pack": null,
+      "resolved": {
+        "customer_id": "C08623",
+        "card1": "19739",
+        "ts": "2016-12-10 13:01:21",
+        "channel": "in_person",
+        "product_cd": "W",
+        "amount_usd": 49,
+        "addr1": "330.0",
+        "addr2": "87.0",
+        "risk_score": "0.40"
+      },
+      "identity": null,
+      "customer_id_matches": true,
+      "risk_score_matches": null
+    },
+    {
+      "case_id": "HHG-004",
+      "trigger_type": "customer_report",
+      "flagged_txn_id": "3583227",
+      "card_id": "C08106-K1",
+      "customer_id": "C08106",
+      "risk_score_from_pack": null,
+      "resolved": {
+        "customer_id": "C08106",
+        "card1": "21429",
+        "ts": "2016-12-29 01:53:54",
+        "channel": "online",
+        "product_cd": "C",
+        "amount_usd": 128.33,
+        "addr1": "",
+        "addr2": "",
+        "risk_score": "0.34"
+      },
+      "identity": {
+        "txn_id": "3583227",
+        "device_type": "desktop",
+        "device_info": "",
+        "os": "",
+        "browser": "firefox 47.0",
+        "screen": "",
+        "device_new_or_found": "New",
+        "proxy": "",
+        "match_status": ""
+      },
+      "customer_id_matches": true,
+      "risk_score_matches": null
+    },
+    {
+      "case_id": "HHG-005",
+      "trigger_type": "risk_score",
+      "flagged_txn_id": "3523199",
+      "card_id": "C02923-K1",
+      "customer_id": "C02923",
+      "risk_score_from_pack": "0.54",
+      "resolved": {
+        "customer_id": "C02923",
+        "card1": "22606",
+        "ts": "2016-12-07 21:38:37",
+        "channel": "online",
+        "product_cd": "R",
+        "amount_usd": 100.07,
+        "addr1": "330.0",
+        "addr2": "87.0",
+        "risk_score": "0.54"
+      },
+      "identity": {
+        "txn_id": "3523199",
+        "device_type": "mobile",
+        "device_info": "iOS Device",
+        "os": "iOS 9.3.5",
+        "browser": "mobile safari 9.0",
+        "screen": "1024x768",
+        "device_new_or_found": "New",
+        "proxy": "",
+        "match_status": "match_status:1"
+      },
+      "customer_id_matches": true,
+      "risk_score_matches": true
+    },
+    {
+      "case_id": "HHG-006",
+      "trigger_type": "customer_report",
+      "flagged_txn_id": "3476682",
+      "card_id": "C07297-K1",
+      "customer_id": "C07297",
+      "risk_score_from_pack": null,
+      "resolved": {
+        "customer_id": "C07297",
+        "card1": "13729",
+        "ts": "2016-11-21 20:30:00",
+        "channel": "online",
+        "product_cd": "C",
+        "amount_usd": 482.12,
+        "addr1": "264.0",
+        "addr2": "87.0",
+        "risk_score": "0.25"
+      },
+      "identity": {
+        "txn_id": "3476682",
+        "device_type": "desktop",
+        "device_info": "Trident/7.0",
+        "os": "Windows 7",
+        "browser": "ie 11.0 for desktop",
+        "screen": "1920x1080",
+        "device_new_or_found": "New",
+        "proxy": "",
+        "match_status": "match_status:2"
+      },
+      "customer_id_matches": true,
+      "risk_score_matches": null
+    },
+    {
+      "case_id": "HHG-007",
+      "trigger_type": "risk_score",
+      "flagged_txn_id": "3514948",
+      "card_id": "C09933-K2",
+      "customer_id": "C09933",
+      "risk_score_from_pack": "0.87",
+      "resolved": {
+        "customer_id": "C09933",
+        "card1": "15868",
+        "ts": "2016-12-05 00:46:14",
+        "channel": "in_person",
+        "product_cd": "W",
+        "amount_usd": 111.92,
+        "addr1": "264.0",
+        "addr2": "87.0",
+        "risk_score": "0.87"
+      },
+      "identity": null,
+      "customer_id_matches": true,
+      "risk_score_matches": true
+    },
+    {
+      "case_id": "HHG-008",
+      "trigger_type": "customer_report",
+      "flagged_txn_id": "3558054",
+      "card_id": "C13171-K2",
+      "customer_id": "C13171",
+      "risk_score_from_pack": null,
+      "resolved": {
+        "customer_id": "C13171",
+        "card1": "10114",
+        "ts": "2016-12-19 22:08:56",
+        "channel": "online",
+        "product_cd": "C",
+        "amount_usd": 55.68,
+        "addr1": "",
+        "addr2": "",
+        "risk_score": "0.38"
+      },
+      "identity": {
+        "txn_id": "3558054",
+        "device_type": "desktop",
+        "device_info": "",
+        "os": "",
+        "browser": "chrome 66.0",
+        "screen": "",
+        "device_new_or_found": "Found",
+        "proxy": "",
+        "match_status": ""
+      },
+      "customer_id_matches": true,
+      "risk_score_matches": null
+    },
+    {
+      "case_id": "HHG-009",
+      "trigger_type": "customer_report",
+      "flagged_txn_id": "3581141",
+      "card_id": "C08299-K1",
+      "customer_id": "C08299",
+      "risk_score_from_pack": null,
+      "resolved": {
+        "customer_id": "C08299",
+        "card1": "13026",
+        "ts": "2016-12-28 12:10:53",
+        "channel": "online",
+        "product_cd": "S",
+        "amount_usd": 30.02,
+        "addr1": "203.0",
+        "addr2": "87.0",
+        "risk_score": "0.28"
+      },
+      "identity": {
+        "txn_id": "3581141",
+        "device_type": "desktop",
+        "device_info": "",
+        "os": "",
+        "browser": "",
+        "screen": "",
+        "device_new_or_found": "Found",
+        "proxy": "",
+        "match_status": "match_status:2"
+      },
+      "customer_id_matches": true,
+      "risk_score_matches": null
+    },
+    {
+      "case_id": "HHG-010",
+      "trigger_type": "risk_score",
+      "flagged_txn_id": "3506725",
+      "card_id": "C10434-K1",
+      "customer_id": "C10434",
+      "risk_score_from_pack": "0.90",
+      "resolved": {
+        "customer_id": "C10434",
+        "card1": "17379",
+        "ts": "2016-12-02 15:18:27",
+        "channel": "online",
+        "product_cd": "R",
+        "amount_usd": 1000.03,
+        "addr1": "469.0",
+        "addr2": "87.0",
+        "risk_score": "0.90"
+      },
+      "identity": {
+        "txn_id": "3506725",
+        "device_type": "desktop",
+        "device_info": "Windows",
+        "os": "Windows 10",
+        "browser": "edge 16.0",
+        "screen": "1366x768",
+        "device_new_or_found": "New",
+        "proxy": "",
+        "match_status": "match_status:2"
+      },
+      "customer_id_matches": true,
+      "risk_score_matches": true
+    },
+    {
+      "case_id": "HHG-011",
+      "trigger_type": "customer_report",
+      "flagged_txn_id": "3583368",
+      "card_id": "C11923-K2",
+      "customer_id": "C11923",
+      "risk_score_from_pack": null,
+      "resolved": {
+        "customer_id": "C11923",
+        "card1": "21363",
+        "ts": "2016-12-29 03:27:44",
+        "channel": "online",
+        "product_cd": "C",
+        "amount_usd": 131.3,
+        "addr1": "",
+        "addr2": "",
+        "risk_score": "0.39"
+      },
+      "identity": {
+        "txn_id": "3583368",
+        "device_type": "mobile",
+        "device_info": "SM-G610F Build/NRD90M",
+        "os": "",
+        "browser": "chrome 66.0 for android",
+        "screen": "",
+        "device_new_or_found": "New",
+        "proxy": "",
+        "match_status": ""
+      },
+      "customer_id_matches": true,
+      "risk_score_matches": null
+    },
+    {
+      "case_id": "HHG-012",
+      "trigger_type": "risk_score",
+      "flagged_txn_id": "3553342",
+      "card_id": "C05876-K2",
+      "customer_id": "C05876",
+      "risk_score_from_pack": "0.55",
+      "resolved": {
+        "customer_id": "C05876",
+        "card1": "12947",
+        "ts": "2016-12-18 04:00:31",
+        "channel": "in_person",
+        "product_cd": "W",
+        "amount_usd": 30.91,
+        "addr1": "494.0",
+        "addr2": "87.0",
+        "risk_score": "0.55"
+      },
+      "identity": null,
+      "customer_id_matches": true,
+      "risk_score_matches": true
+    },
+    {
+      "case_id": "HHG-013",
+      "trigger_type": "risk_score",
+      "flagged_txn_id": "3526826",
+      "card_id": "C07671-K2",
+      "customer_id": "C07671",
+      "risk_score_from_pack": "0.76",
+      "resolved": {
+        "customer_id": "C07671",
+        "card1": "22756",
+        "ts": "2016-12-09 02:39:29",
+        "channel": "online",
+        "product_cd": "C",
+        "amount_usd": 35.66,
+        "addr1": "",
+        "addr2": "",
+        "risk_score": "0.76"
+      },
+      "identity": {
+        "txn_id": "3526826",
+        "device_type": "desktop",
+        "device_info": "Windows",
+        "os": "",
+        "browser": "chrome 66.0",
+        "screen": "",
+        "device_new_or_found": "New",
+        "proxy": "",
+        "match_status": ""
+      },
+      "customer_id_matches": true,
+      "risk_score_matches": true
+    },
+    {
+      "case_id": "HHG-014",
+      "trigger_type": "analyst_request",
+      "flagged_txn_id": "3478561",
+      "card_id": "C13487-K1",
+      "customer_id": "C13487",
+      "risk_score_from_pack": null,
+      "resolved": {
+        "customer_id": "C13487",
+        "card1": "13250",
+        "ts": "2016-11-22 16:11:00",
+        "channel": "online",
+        "product_cd": "C",
+        "amount_usd": 74.96,
+        "addr1": "191.0",
+        "addr2": "87.0",
+        "risk_score": "0.05"
+      },
+      "identity": {
+        "txn_id": "3478561",
+        "device_type": "mobile",
+        "device_info": "SM-G935F Build/NRD90M",
+        "os": "Android 7.0",
+        "browser": "chrome 62.0 for android",
+        "screen": "1920x1080",
+        "device_new_or_found": "New",
+        "proxy": "IP_PROXY:ANONYMOUS",
+        "match_status": "match_status:2"
+      },
+      "customer_id_matches": true,
+      "risk_score_matches": null
+    },
+    {
+      "case_id": "HHG-015",
+      "trigger_type": "risk_score",
+      "flagged_txn_id": "3464869",
+      "card_id": "C03042-K1",
+      "customer_id": "C03042",
+      "risk_score_from_pack": "0.77",
+      "resolved": {
+        "customer_id": "C03042",
+        "card1": "15158",
+        "ts": "2016-11-17 14:03:36",
+        "channel": "online",
+        "product_cd": "R",
+        "amount_usd": 599.94,
+        "addr1": "327.0",
+        "addr2": "87.0",
+        "risk_score": "0.77"
+      },
+      "identity": {
+        "txn_id": "3464869",
+        "device_type": "desktop",
+        "device_info": "Trident/7.0",
+        "os": "Windows 8.1",
+        "browser": "ie 11.0 for desktop",
+        "screen": "1680x1050",
+        "device_new_or_found": "New",
+        "proxy": "",
+        "match_status": "match_status:2"
+      },
+      "customer_id_matches": true,
+      "risk_score_matches": true
+    },
+    {
+      "case_id": "HHG-016",
+      "trigger_type": "customer_report",
+      "flagged_txn_id": "3534820",
+      "card_id": "C09988-K1",
+      "customer_id": "C09988",
+      "risk_score_from_pack": null,
+      "resolved": {
+        "customer_id": "C09988",
+        "card1": "11242",
+        "ts": "2016-12-11 22:39:08",
+        "channel": "online",
+        "product_cd": "C",
+        "amount_usd": 59.67,
+        "addr1": "",
+        "addr2": "",
+        "risk_score": "0.37"
+      },
+      "identity": {
+        "txn_id": "3534820",
+        "device_type": "desktop",
+        "device_info": "Windows",
+        "os": "",
+        "browser": "edge 16.0",
+        "screen": "",
+        "device_new_or_found": "New",
+        "proxy": "",
+        "match_status": ""
+      },
+      "customer_id_matches": true,
+      "risk_score_matches": null
+    },
+    {
+      "case_id": "HHG-017",
+      "trigger_type": "risk_score",
+      "flagged_txn_id": "3450629",
+      "card_id": "C04570-K1",
+      "customer_id": "C04570",
+      "risk_score_from_pack": "0.57",
+      "resolved": {
+        "customer_id": "C04570",
+        "card1": "20749",
+        "ts": "2016-11-11 23:46:24",
+        "channel": "online",
+        "product_cd": "R",
+        "amount_usd": 100.09,
+        "addr1": "204.0",
+        "addr2": "87.0",
+        "risk_score": "0.57"
+      },
+      "identity": {
+        "txn_id": "3450629",
+        "device_type": "desktop",
+        "device_info": "Windows",
+        "os": "Windows 10",
+        "browser": "chrome 65.0",
+        "screen": "1920x1080",
+        "device_new_or_found": "Found",
+        "proxy": "IP_PROXY:HIDDEN",
+        "match_status": "match_status:2"
+      },
+      "customer_id_matches": true,
+      "risk_score_matches": true
+    },
+    {
+      "case_id": "HHG-018",
+      "trigger_type": "customer_report",
+      "flagged_txn_id": "3491361",
+      "card_id": "C02354-K2",
+      "customer_id": "C02354",
+      "risk_score_from_pack": null,
+      "resolved": {
+        "customer_id": "C02354",
+        "card1": "19248",
+        "ts": "2016-11-27 13:41:26",
+        "channel": "in_person",
+        "product_cd": "W",
+        "amount_usd": 39.08,
+        "addr1": "126.0",
+        "addr2": "87.0",
+        "risk_score": "0.48"
+      },
+      "identity": null,
+      "customer_id_matches": true,
+      "risk_score_matches": null
+    },
+    {
+      "case_id": "HHG-019",
+      "trigger_type": "risk_score",
+      "flagged_txn_id": "3503878",
+      "card_id": "C07987-K2",
+      "customer_id": "C07987",
+      "risk_score_from_pack": "0.90",
+      "resolved": {
+        "customer_id": "C07987",
+        "card1": "11539",
+        "ts": "2016-12-01 17:28:53",
+        "channel": "online",
+        "product_cd": "R",
+        "amount_usd": 99.92,
+        "addr1": "264.0",
+        "addr2": "87.0",
+        "risk_score": "0.90"
+      },
+      "identity": {
+        "txn_id": "3503878",
+        "device_type": "desktop",
+        "device_info": "Windows",
+        "os": "other",
+        "browser": "chrome 61.0",
+        "screen": "1280x720",
+        "device_new_or_found": "New",
+        "proxy": "",
+        "match_status": "match_status:0"
+      },
+      "customer_id_matches": true,
+      "risk_score_matches": true
+    },
+    {
+      "case_id": "HHG-020",
+      "trigger_type": "risk_score",
+      "flagged_txn_id": "3509359",
+      "card_id": "C12265-K2",
+      "customer_id": "C12265",
+      "risk_score_from_pack": "0.52",
+      "resolved": {
+        "customer_id": "C12265",
+        "card1": "10010",
+        "ts": "2016-12-03 06:04:26",
+        "channel": "online",
+        "product_cd": "R",
+        "amount_usd": 125.08,
+        "addr1": "264.0",
+        "addr2": "87.0",
+        "risk_score": "0.52"
+      },
+      "identity": {
+        "txn_id": "3509359",
+        "device_type": "desktop",
+        "device_info": "Trident/7.0",
+        "os": "Windows 10",
+        "browser": "ie 11.0 for desktop",
+        "screen": "1920x1080",
+        "device_new_or_found": "New",
+        "proxy": "",
+        "match_status": "match_status:2"
+      },
+      "customer_id_matches": true,
+      "risk_score_matches": true
+    }
+  ]
+}

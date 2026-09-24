@@ -1,0 +1,603 @@
+===== PAGE 1 =====
+TigerGraph Agentic Fraud Investigation — Master Blueprint Page 1
+
+TigerGraph Agentic Fraud Investigation
+
+Master Requirements, Precautions & Differentiation Blueprint
+
+Purpose: Consolidate everything established so far into one working project document covering official requirements, proposed
+
+investigation logic, precautions, differentiation, evaluation, demo strategy and the eventual build-prompt pipeline.
+
+Important: Official challenge facts are separated from proposed design. Proposed ideas are not claims about what
+
+the challenge officially requires.
+
+1. Source-of-Truth Rules
+
+•
+The uploaded official TigerGraph Agentic Fraud Investigation HHGOA PDF is authoritative for challenge-specific
+
+requirements, constraints, judging, dataset facts, submission and success criteria.
+
+•
+Use the README/data documentation for detailed schema; never infer missing fields from the challenge description.
+
+•
+Never invent fields, labels, fraud flags, benchmark properties, APIs, policies, regulatory thresholds or capabilities.
+
+•
+If the source does not specify something, say: “The challenge document does not specify this.”
+
+•
+Clearly distinguish explicit source facts, source-supported inference, proposed design and general technical knowledge.
+
+•
+Mark additions beyond the brief as PROPOSED — NOT AN OFFICIAL REQUIREMENT.
+
+2. Official Challenge Requirements — Source-Derived
+
+The brief asks for an Agentic Fraud Investigation Agent powered by TigerGraph. It describes investigating fraud,
+
+creating/progressing cases, gathering evidence, handling uncertainty, requesting additional evidence, recommending/executing
+
+permitted next-best actions, explaining reasoning, stopping when enough evidence exists, and using prior case memory.
+
+Required components stated in the brief: TigerGraph Savanna or Community Edition; GSQL and graph algorithms;
+
+TigerGraph MCP; GraphRAG; UI. The brief states that agent framework and LLM choice are optional, with the LLM supporting
+
+reasoning, tool selection, evidence synthesis and explanations rather than replacing graph analysis.
+
+Dataset facts stated in the brief: about 590,000 card transactions; about 13,500 customers; device/connection records;
+
+transaction risk score; closed investigations for the first four months; bank fraud policy; five known fraud patterns; regulatory
+
+references; 20 benchmark cases from the final two months; some fraud patterns may be undocumented.
+
+Submission expectations: working agent; GitHub repo; outputs for 20 cases including investigation
+
+record/evidence/findings/decisions/actions; case written to graph; SAR when required; next-best-action and approval route
+
+before/after additional evidence; 3–5 minute demo; technical blog; social post.
+
+Judging: Investigation accuracy 25%; Next best action 25%; Case summary/explainability 10%; Agentic design/engineering
+
+15%; Innovation 15%; Demo quality 10%.
+
+Criterion Weight
+
+Investigation accuracy 25%
+
+Next best action 25%
+
+Case summary / explainability 10%
+
+Agentic design / engineering 15%
+
+Innovation 15%
+
+Demo quality 10%
+
+3. Central Engineering Problem
+
+How exactly does the agent decide that one additional piece of evidence is worth acquiring — and that another
+
+piece is not?
+
+Weak: Agent → retrieve everything → LLM summarizes → recommendation. Stronger: current state → hypotheses →
+
+uncertainty → candidate investigations → expected decision impact → select next investigation → acquire evidence → update
+
+===== PAGE 2 =====
+TigerGraph Agentic Fraud Investigation — Master Blueprint Page 2
+
+state → check sufficiency → continue/STOP. This is a proposed design framing derived from the brief’s uncertainty, evidence,
+
+next-best-action and stopping requirements.
+
+4. The Three Core Mechanisms
+
+Step 1 — Investigation State
+
+•
+Case: target transaction/entity, case identity, status.
+
+•
+Hypotheses: competing explanations, supporting evidence, contradictions, unresolved questions and potential falsifiers.
+
+•
+Evidence: provenance, source/tool/query, factual observation, relationship/context where available, and hypothesis impact.
+
+•
+Unknowns: explicitly separate known, unknown, contradictory, unresolved and irrelevant.
+
+•
+Current decision state: sufficient/insufficient/other states only where supported by policy/data.
+
+•
+Investigation history: actions, evidence, rejected paths and reasons.
+
+•
+Budget/bounds: proposed safeguards against repeated or endless investigation.
+
+Rule: the LLM interprets evidence; it must not become the source of factual graph relationships.
+
+Step 2 — Choosing the Next Evidence
+
+•
+Generate candidate investigations.
+
+•
+Connect each candidate to a current uncertainty or competing hypothesis.
+
+•
+Estimate expected decision impact: could the result materially change the decision?
+
+•
+Account for justified investigation cost/constraints.
+
+•
+Make selection explainable: why A over B/C?
+
+•
+Ensure the next step depends on what was discovered rather than being a fixed script.
+
+Step 3 — Knowing When to Stop
+
+•
+Can current evidence justify a permitted decision?
+
+•
+Is there unresolved uncertainty that could materially change that decision?
+
+•
+Does any available next investigation have enough expected decision impact to justify continuing?
+
+•
+Are contradictions resolved or explicitly carried into the decision?
+
+•
+Have investigation bounds been reached?
+
+•
+If evidence is insufficient, can the system safely stop and request/recommend further review rather than invent certainty?
+
+5. Responsibility Split
+
+Component Primary responsibility Must NOT become
+
+TigerGraph/GSQL Graph evidence, traversals, algorithms, structural/temporal investigationDecorative storage or LLM-invented graph
+
+LLM Hypotheses, ambiguity, candidate investigations, synthesis, explanationsSource of factual evidence or unrestricted executor
+
+GraphRAG Structured retrieval of relevant graph/evidence context Innovation by itself or generic text RAG
+
+MCP Controlled tool/action interface Innovation merely because present
+
+Control layer Evidence validation, bounds, decision/STOP checks, permissionsOpaque arbitrary rules
+
+Case memory Contextual precedent Blind lookup that determines current case
+
+UI Investigation state/evidence/uncertainty/action/decision Generic dashboard as the innovation
+
+6. What Is NOT Unique vs What Could Be
+
+A. Fake innovation — do not sell as breakthroughs
+
+•
+AI-powered fraud detection.
+
+===== PAGE 3 =====
+TigerGraph Agentic Fraud Investigation — Master Blueprint Page 3
+
+•
+GraphRAG itself.
+
+•
+MCP itself.
+
+•
+Generic dashboard/chatbot/risk cards.
+
+•
+Generic explainability prose.
+
+•
+Memory merely because it exists.
+
+•
+Multiple agents added only for appearance.
+
+B. Commodity / necessary capability
+
+•
+TigerGraph integration; GSQL; graph algorithms; GraphRAG; MCP; LLM reasoning; case creation; graph visualization; audit
+
+logs; policy checks; historical case retrieval.
+
+C. Defensible differentiation — proposed
+
+•
+Evidence-driven investigation state with hypotheses, supporting/contradicting evidence and unknowns.
+
+•
+Adaptive evidence acquisition based on potential decision impact.
+
+•
+Explicit, inspectable STOP/sufficiency mechanism.
+
+•
+Counter-hypothesis/contradiction-seeking investigation.
+
+•
+Contextual case memory rather than unquestioned precedent.
+
+D. Potential breakthrough — proposed research direction
+
+Fraud investigation as an information-acquisition problem: ask “What is the most valuable next piece of evidence
+
+to acquire before deciding?” rather than merely “Is this transaction fraudulent?”
+
+7. Skeptical Judge Attack Checklist
+
+1 Is it genuinely necessary?
+
+2 Is it genuinely agentic?
+
+3 Is TigerGraph essential here?
+
+4 Could a normal database do it?
+
+5 Could a normal ML model do it?
+
+6 Could ordinary RAG do it?
+
+7 Could another team reproduce it quickly?
+
+8 Is it useful to a fraud investigator?
+
+9 Can it be shown in 3–5 minutes?
+
+10 Can it be measured?
+
+11 What if evidence is contradictory?
+
+12 What if evidence is insufficient?
+
+13 What prevents unsupported LLM conclusions?
+
+14 What prevents endless investigation?
+
+15 What prevents unauthorized action?
+
+8. Current Remove / Keep / Redesign / Explore Decisions
+
+REMOVE
+
+1 Generic “AI fraud detection” positioning.
+
+2 Unnecessary multi-agent complexity.
+
+3 Generic dashboard features from the innovation narrative.
+
+===== PAGE 4 =====
+TigerGraph Agentic Fraud Investigation — Master Blueprint Page 4
+
+4 Claiming GraphRAG itself is innovation.
+
+5 Unrestricted autonomous execution.
+
+KEEP
+
+1 TigerGraph as investigative evidence engine.
+
+2 MCP as controlled tool boundary.
+
+3 Evidence → hypothesis → reassessment loop.
+
+4 Case memory with contextual safeguards.
+
+5 Benchmark-driven evaluation using the 20 cases and required outputs.
+
+REDESIGN
+
+1 Agentic behavior: adaptive investigation based on uncertainty.
+
+2 GraphRAG: structured evidence supporting/contradicting hypotheses.
+
+3 Next-best action: decision-relevant evidence/action selection.
+
+4 STOP: explicit sufficiency + uncertainty + evidence value + bounds.
+
+5 Explainability: decision → evidence → relationship → reasoning → contradiction → uncertainty → authorization.
+
+EXPLORE
+
+1 Evidence value / information gain.
+
+2 Counter-hypothesis investigation.
+
+3 Investigation budgets.
+
+4 Decision stability after new evidence.
+
+5 Case-memory counterfactuals: why similar cases reached different outcomes.
+
+9. Critical Precautions
+
+•
+Never hallucinate data or graph relationships.
+
+•
+Never fabricate benchmark accuracy or hard-code expected answers.
+
+•
+Do not treat a risk score as fraud truth unless the dataset defines it that way.
+
+•
+Do not treat historical cases as automatic labels.
+
+•
+Do not confuse confidence with certainty.
+
+•
+Do not invent policy or regulatory thresholds.
+
+•
+Keep recommendation, authorization and execution separate.
+
+•
+Bound investigation to prevent loops and low-value exploration.
+
+•
+Do not add technology merely because it sounds advanced.
+
+•
+Do not optimize only for the demo; evaluate real benchmark cases.
+
+•
+Expose contradictions, insufficient evidence, tool failure and authorization failure.
+
+•
+Do not make the UI the product; make the investigation mechanism the product.
+
+10. Proposed Evaluation Framework
+
+These additional metrics are proposed engineering metrics, not official judging criteria unless explicitly stated by the challenge.
+
+Metric Question
+
+Investigation accuracy Did the system reach an appropriate finding/decision?
+
+Next-best-action accuracy Did it choose an appropriate next investigation/action?
+
+===== PAGE 5 =====
+TigerGraph Agentic Fraud Investigation — Master Blueprint Page 5
+
+Evidence correctness Did cited evidence support the finding?
+
+Sufficiency/STOP accuracy Did it stop/continue appropriately?
+
+Unsupported-claim rate How often did the LLM state ungrounded facts?
+
+Unnecessary-investigation rate How often did it pursue low-value evidence?
+
+Policy-violation rate Did it attempt unauthorized actions?
+
+Investigation efficiency How many steps/tool calls were needed?
+
+Decision stability How did new evidence change the decision?
+
+11. 3–5 Minute Demo Strategy
+
+1 Trigger one benchmark investigation case.
+
+2 Show initial uncertainty and competing hypotheses.
+
+3 Show a meaningful TigerGraph relationship/pattern.
+
+4 Show the information gap.
+
+5 Show candidate next investigations.
+
+6 Show why the selected investigation can affect the decision.
+
+7 Show contradiction if available.
+
+8 Show state update.
+
+9 Show STOP or justified continuation.
+
+10 Show recommendation/approval route without collapsing authorization into execution.
+
+11 Trace the final conclusion back to graph evidence.
+
+Demo goal: make the judge see that the agent decided what it needed to know next—not merely that it retrieved
+
+graph data.
+
+12. How the Final Build Prompt Should Be Produced
+
+Do not write the final coding prompt first. The build prompt should be generated only after the investigation mechanism
+
+survives review.
+
+Pipeline: Challenge PDF → Investigation State → Next-Evidence Mechanism → STOP Mechanism → Skeptical
+
+Red-Team → Real Benchmark Cases → Formal Specification → Technology Mapping → Implementation
+
+Specification → Final Build Prompt
+
+•
+Work sequentially and STOP after each design phase.
+
+•
+Use actual benchmark cases before freezing the mechanism.
+
+•
+Formalize state, evidence, hypotheses, candidate investigations, decision impact, selection, STOP, safety and evaluation.
+
+•
+Only then map responsibilities to TigerGraph/GSQL/GraphRAG/MCP/LLM/memory/UI.
+
+•
+Only then generate the final implementation/build prompt.
+
+Build-prompt safeguards: the coding AI must not silently replace TigerGraph, invent schema, fabricate evidence,
+
+remove STOP logic, turn adaptive investigation into a fixed workflow, or allow unauthorized execution. Any forced
+
+change must be explicitly reported with constraint, proposed change, reason, impact and alternative.
+
+13. Proposed Investigation Control Loop
+
+Current Investigation State
+
+↓
+
+Current Hypotheses
+
+↓
+
+Current Uncertainty
+
+===== PAGE 6 =====
+TigerGraph Agentic Fraud Investigation — Master Blueprint Page 6
+
+↓
+
+Candidate Evidence / Actions
+
+↓
+
+Expected Decision Impact
+
+↓
+
+Select Next Investigation
+
+↓
+
+Acquire Evidence
+
+↓
+
+Update Investigation State
+
+↓
+
+Check Sufficiency
+
+n n
+
+INSUFFICIENT SUFFICIENT
+
+↓ ↓
+
+Continue STOP
+
+The biggest unresolved technical task is to define a defensible, measurable implementation of Expected Decision Impact
+
+without unnecessary mathematical complexity or unsupported LLM judgment.
+
+14. Recommended Work Sequence From Here
+
+1 Do not code yet. Finalize the three mechanisms conceptually.
+
+2 Read the README and dataset schema; never invent schema from the brief.
+
+3 Take 3–5 actual benchmark cases and manually perform the investigation process.
+
+4 Write your own reasoning first: hypotheses, unknowns, contradictions, next useful evidence and stopping point.
+
+5 Give your reasoning to the AI and ask it to attack/formalize it—not simply agree.
+
+6 Red-team the control loop.
+
+7 Define measurable next-evidence and STOP mechanisms.
+
+8 Freeze the investigation specification.
+
+9 Map responsibilities to technology and remove anything without a necessary job.
+
+10 Generate the final implementation/build prompt.
+
+11 Implement in small verifiable slices.
+
+12 Evaluate on the benchmark cases.
+
+13 Only then optimize demo polish.
+
+15. Questions Every Team Member Should Be Able to Answer
+
+•
+What is the current investigation state?
+
+•
+What are the competing hypotheses?
+
+•
+What evidence supports and contradicts each?
+
+•
+What remains unknown?
+
+•
+Why does the agent need additional evidence?
+
+•
+Why was this next investigation selected over alternatives?
+
+•
+What makes the selected evidence decision-relevant?
+
+•
+What makes the agent stop?
+
+•
+What prevents endless investigation?
+
+•
+What prevents hallucinated evidence?
+
+===== PAGE 7 =====
+TigerGraph Agentic Fraud Investigation — Master Blueprint Page 7
+
+•
+What prevents unauthorized action?
+
+•
+Where exactly is TigerGraph essential?
+
+•
+What should the LLM never do?
+
+•
+How does historical memory influence the current case?
+
+•
+How are contradictions handled?
+
+•
+How is next-best-action quality measured?
+
+•
+How is STOP correctness measured?
+
+•
+Can the complete reasoning loop be shown in 3–5 minutes?
+
+16. Final North-Star Principle
+
+Weak: “We built an AI fraud agent using TigerGraph, GraphRAG, MCP and an LLM.”
+
+Stronger proposed direction: “We designed a measurable, evidence-grounded investigation process that
+
+determines what it needs to know, chooses the next investigation because it can affect the decision, updates its
+
+reasoning when evidence changes, recognizes when further investigation is not justified, and produces a
+
+policy-compliant, traceable outcome.”
+
+This is our current north star. It is a proposed design direction, not an official challenge quote.

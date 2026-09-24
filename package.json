@@ -1,0 +1,57 @@
+{
+  "name": "hhgoa-fraud-investigation-agent",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "TigerGraph Agentic Fraud Investigation agent for the TigerGraph x Hacker House Goa 2026 challenge: an adaptive investigation loop (state -> hypotheses -> unknowns -> candidate investigations -> expected decision impact -> next investigation -> evidence -> state update -> STOP check -> recommendation -> authorization -> execution -> case memory) over the supplied HHGOA_IEEE dataset.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "inspect-dataset": "node tools/inspect-dataset.mjs",
+    "build-graph": "tsx src/graph/local/build-projection.ts",
+    "prepare-tg-load": "tsx tools/prepare-tg-load.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "dev": "tsx src/api/server.ts",
+    "dev:web": "node apps/web/server.mjs",
+    "mcp:server": "tsx src/mcp/stdio-server.ts",
+    "investigate": "tsx src/cli/investigate.ts",
+    "evaluate": "tsx src/cli/evaluate.ts",
+    "benchmark": "tsx src/cli/benchmark.ts",
+    "demo": "tsx src/cli/demo.ts",
+    "compile-check": "node scripts/compile-check.js",
+    "verify:ts": "node scripts/compile-check.js",
+    "verify:backends": "node scripts/verify-backends.js",
+    "verify:integration": "node scripts/verify-integration.js",
+    "verify:outputs": "node scripts/verify-outputs.js",
+    "verify:all": "npm run verify:ts && npm run verify:backends && npm run verify:integration && npm run verify:outputs",
+    "benchmark:run": "node scripts/benchmark.js",
+    "benchmark:stop": "node scripts/benchmark-stop.js",
+    "load": "node scripts/load-graph.js",
+    "start": "node dist/index.js",
+    "cli:investigate": "node dist/src/cli/investigate.js",
+    "cli:benchmark": "node dist/src/cli/benchmark.js",
+    "cli:demo": "node dist/src/cli/demo.js",
+    "api": "node dist/src/api/server.js",
+    "mcp": "node dist/src/mcp/stdio-server.js",
+    "build:web": "node --check apps/web/server.mjs && node --check apps/web/app.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.20.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^4.21.2",
+    "zod": "^3.25.76",
+    "@fastify/express": "^0.5.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^4.17.23",
+    "@types/node": "^22.18.0",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3",
+    "vitest": "^2.1.9"
+  }
+}

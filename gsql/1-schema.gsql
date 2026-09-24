@@ -1,0 +1,235 @@
+-- =============================================================================
+-- HHGOA Fraud Investigation graph schema (Phase 2)
+-- Source of truth: data/raw/HHGOA_IEEE/README.md "Suggested graph schema",
+-- extended with the investigation vertices the agent persists (case memory).
+-- Reference: docs/tigergraph-schema.md
+--
+-- Vertex ids are STRING throughout: dataset ids are C#####-K#, CC-####, HHG-###
+-- and raw TransactionIDs are carried as strings so every id in an answer file
+-- exists verbatim in the graph.
+-- =============================================================================
+
+-- ---------------------------------------------------------------- dataset core
+CREATE VERTEX Customer (
+  PRIMARY_ID customer_id STRING,
+  customer_id STRING
+) WITH primary_id_as_attribute = "true"
+
+CREATE VERTEX Card (
+  PRIMARY_ID card_id STRING,          -- C01234-K1 (labelled or derived, see label_source)
+  card_id STRING,
+  card_key STRING,                    -- card1|card6 internal key (docs/dataset-schema.md §3)
+  customer_id STRING,
+  k_index INT,
+  label_source STRING                 -- labelled_evidence | derived_card6_rank
+) WITH primary_id_as_attribute = "true"
+
+CREATE VERTEX Transaction (
+  PRIMARY_ID txn_id STRING,           -- raw TransactionID, verbatim
+  txn_id STRING,
+  ts STRING,                          -- 'YYYY-MM-DD HH:MM:SS' from the dataset
+  ts_epoch LONG,                      -- ms epoch of ts, for window predicates
+  amount_usd DOUBLE,
+  product_cd STRING,                  -- W | C | H | R | S
+  channel STRING,                     -- in_person | online
+  risk_score DOUBLE,                  -- input signal, never a verdict
+  customer_id STRING,
+  card_id STRING,                     -- resolved via the card1+card6 key rule
+  addr1 STRING,                       -- billing region code
+  addr2 STRING,                       -- billing country code (87 = home)
+  p_emaildomain STRING,
+  r_emaildomain STRING
+) WITH primary_id_as_attribute = "true"
+
+CREATE VERTEX DeviceProfile (
+  PRIMARY_ID device_id STRING,        -- DeviceInfo | OS | browser | screen
+  device_id STRING,
+  device_type STRING,                 -- mobile | desktop
+  os STRING,
+  browser STRING,
+  screen STRING,
+  device_new_or_found STRING,         -- id_15
+  proxy STRING                        -- id_23
+) WITH primary_id_as_attribute = "true"
+
+CREATE VERTEX EmailDomain (
+  PRIMARY_ID domain STRING,
+  domain STRING
+) WITH primary_id_as_attribute = "true"
+
+CREATE VERTEX BillingRegion (
+  PRIMARY_ID region STRING,           -- addr1 code, e.g. 444.0
+  region STRING,
+  country STRING                      -- addr2 code observed for the region
+) WITH primary_id_as_attribute = "true"
+
+CREATE VERTEX ClosedCase (
+  PRIMARY_ID case_id STRING,          -- CC-0001 ...
+  case_id STRING,
+  customer_id STRING,
+  card_id STRING,
+  opened_at STRING,
+  closed_at STRING,
+  outcome STRING,                     -- confirmed_fraud | cleared
+  pattern STRING,
+  first_fraud_txn_id STRING,
+  txn_ids STRING,                     -- pipe-separated, as shipped
+  n_txns INT,
+  exposure_usd DOUBLE,
+  connected_card_ids STRING,
+  actions_taken STRING,
+  report_filed STRING,
+  analyst_notes STRING
+) WITH primary_id_as_attribute = "true"
+
+-- ------------------------------------------------- agent investigation records
+CREATE VERTEX InvestigationCase (
+  PRIMARY_ID case_id STRING,          -- HHG-### (case pack) or agent id
+  case_id STRING,
+  status STRING,                      -- open | closed_fraud | closed_legitimate | escalated
+  verdict STRING,                     -- fraud | legitimate | uncertain
+  fraud_probability DOUBLE,
+  pattern STRING,
+  trigger_type STRING,
+  flagged_txn_id STRING,
+  card_id STRING,
+  customer_id STRING,
+  exposure_usd DOUBLE,
+  summary STRING,
+  graph_backend STRING,               -- tigergraph | local-simulated
+  written_at STRING,
+  updated_at STRING
+) WITH primary_id_as_attribute = "true"
+
+CREATE VERTEX Hypothesis (
+  PRIMARY_ID hypothesis_id STRING,    -- HHG-###-H1 ...
+  hypothesis_id STRING,
+  case_id STRING,
+  statement STRING,
+  status STRING,                      -- open | supported | contradicted | falsified | unresolved
+  created_at STRING
+) WITH primary_id_as_attribute = "true"
+
+CREATE VERTEX Evidence (
+  PRIMARY_ID evidence_id STRING,      -- HHG-###-E1 ...
+  evidence_id STRING,
+  case_id STRING,
+  claim STRING,
+  kind STRING,                        -- direct | graph_derived | llm_interpretation
+  source STRING,                      -- graph | document | customer | external
+  ref STRING,                         -- query:<tool>(args) | document ref | evidence_request:N
+  entity_ids STRING,                  -- pipe-separated ids the claim rests on
+  hypothesis_id STRING,               -- hypothesis this evidence supports/contradicts ('' if none)
+  stance STRING,                      -- supports | contradicts | neutral
+  created_at STRING
+) WITH primary_id_as_attribute = "true"
+
+CREATE VERTEX Decision (
+  PRIMARY_ID decision_id STRING,      -- HHG-###-D1 ...
+  decision_id STRING,
+  case_id STRING,
+  decision STRING,                    -- stop | continue | stop_insufficient
+  reason STRING,
+  created_at STRING
+) WITH primary_id_as_attribute = "true"
+
+CREATE VERTEX Action (
+  PRIMARY_ID action_id STRING,        -- HHG-###-A1 ...
+  action_id STRING,
+  case_id STRING,
+  action STRING,                      -- policy action id (ALLOW_TRANSACTION, ...)
+  route STRING,                       -- auto | L1 | L2
+  status STRING,                      -- recommended | authorized | executed | rejected | pending_approval
+  reason STRING,                      -- cites policy rule R1..R10
+  phase STRING,                       -- initial | final
+  created_at STRING,
+  executed_at STRING
+) WITH primary_id_as_attribute = "true"
+
+CREATE VERTEX AuditEvent (
+  PRIMARY_ID event_id STRING,
+  event_id STRING,
+  case_id STRING,
+  ts STRING,
+  event_type STRING,                  -- tool_call | evidence | hypothesis | decision | authorization | execution | error
+  tool STRING,
+  reason STRING,
+  detail STRING                       -- compact JSON of input/result summary
+) WITH primary_id_as_attribute = "true"
+
+-- ---------------------------------------------------------------------- edges
+-- Dataset edges (README suggested schema). OWNS/MADE carry no attributes;
+-- FROM_DEVICE exists only for online transactions (identity.csv inner join).
+CREATE DIRECTED EDGE OWNS (
+  FROM Customer, TO Card
+)
+
+CREATE DIRECTED EDGE MADE (
+  FROM Card, TO Transaction
+) WITH reverse_edge = "MADE_REV"       -- Transaction -> Card (txn_detail, shared-element walks)
+
+CREATE DIRECTED EDGE FROM_DEVICE (
+  FROM Transaction, TO DeviceProfile
+) WITH reverse_edge = "FROM_DEVICE_REV" -- DeviceProfile -> Transaction (device_neighbors)
+
+CREATE DIRECTED EDGE PURCHASER_EMAIL (
+  FROM Transaction, TO EmailDomain
+) WITH reverse_edge = "PURCHASER_EMAIL_REV" -- EmailDomain -> Transaction (email_neighbors)
+
+CREATE DIRECTED EDGE BILLED_IN (
+  FROM Transaction, TO BillingRegion
+) WITH reverse_edge = "BILLED_IN_REV"  -- BillingRegion -> Transaction (region_cluster)
+
+CREATE DIRECTED EDGE NEXT (
+  FROM Transaction, TO Transaction    -- ordered by ts within a card
+)
+
+CREATE DIRECTED EDGE INVOLVES (
+  FROM ClosedCase, TO Transaction
+) WITH reverse_edge = "INVOLVES_REV"   -- Transaction -> ClosedCase (precedent on this txn)
+
+CREATE DIRECTED EDGE ON_CARD (
+  FROM ClosedCase, TO Card
+) WITH reverse_edge = "ON_CARD_REV"    -- Card -> ClosedCase (prior cases on this card)
+
+CREATE DIRECTED EDGE CONNECTED_TO (
+  FROM ClosedCase, TO Card
+)
+
+-- Investigation edges: case memory is written into the graph so the next
+-- investigation can retrieve it (README answer format, Part 1).
+CREATE DIRECTED EDGE HAS_HYPOTHESIS (
+  FROM InvestigationCase, TO Hypothesis
+)
+
+CREATE DIRECTED EDGE HAS_EVIDENCE (
+  FROM InvestigationCase, TO Evidence
+)
+
+CREATE DIRECTED EDGE SUPPORTS (
+  FROM Evidence, TO Hypothesis
+)
+
+CREATE DIRECTED EDGE CONTRADICTS (
+  FROM Evidence, TO Hypothesis
+)
+
+CREATE DIRECTED EDGE HAS_DECISION (
+  FROM InvestigationCase, TO Decision
+)
+
+CREATE DIRECTED EDGE HAS_ACTION (
+  FROM InvestigationCase, TO Action
+)
+
+CREATE DIRECTED EDGE AUDITED_BY (
+  FROM InvestigationCase, TO AuditEvent
+)
+
+CREATE DIRECTED EDGE SIMILAR_TO (
+  FROM InvestigationCase, TO ClosedCase   -- precedent retrieved as case memory
+)
+
+USE GRAPH hhgoa_fraud
+
+
